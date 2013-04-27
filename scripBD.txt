@@ -1,0 +1,181 @@
+USE [inventario2]
+GO
+/****** Object:  Table [dbo].[cliente]    Script Date: 04/13/2013 23:21:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[cliente](
+	[cliente_id] [int] NOT NULL,
+	[cliente_desc] [varchar](50) NULL,
+	[agrupador_desc] [varchar](50) NULL,
+	[canal_desc] [varchar](50) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[cliente_id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[bodegas]    Script Date: 04/13/2013 23:21:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[bodegas](
+	[centro_id] [int] NOT NULL,
+	[centro_desc] [varchar](max) NULL,
+	[paisl_id] [varchar](max) NULL,
+	[regionl_id] [varchar](max) NULL,
+	[provincial_id] [varchar](max) NULL,
+	[tecnologia_id] [varchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[centro_id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[tiempo]    Script Date: 04/13/2013 23:21:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tiempo](
+	[fecha_id] [int] NOT NULL,
+	[mes] [varchar](max) NULL,
+	[trim_id] [varchar](max) NULL,
+	[smt_id] [varchar](max) NULL,
+	[ano_id] [varchar](max) NULL,
+	[fecha] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[fecha_id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[promocion]    Script Date: 04/13/2013 23:21:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[promocion](
+	[promocion_id] [int] NOT NULL,
+	[promocion_desc] [varchar](max) NULL,
+	[tipopromo_id] [varchar](max) NULL,
+	[tipodesc_id] [varchar](max) NULL,
+	[tipopubl_id] [varchar](max) NULL,
+	[tipoaccion_id] [varchar](max) NULL,
+	[fecha_inicio_id] [datetime] NULL,
+	[fecha_fin_id] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[promocion_id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[producto]    Script Date: 04/13/2013 23:21:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[producto](
+	[material_id] [int] NOT NULL,
+	[producto] [varchar](50) NULL,
+	[familia_desc] [varchar](50) NULL,
+	[denom_id] [varchar](50) NULL,
+	[variet_id] [varchar](50) NULL,
+	[formato_id] [varchar](50) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[material_id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[hechos]    Script Date: 04/13/2013 23:21:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[hechos](
+	[fecha_id] [int] NOT NULL,
+	[fecha] [datetime] NULL,
+	[material_id] [int] NOT NULL,
+	[cliente_id] [int] NULL,
+	[centro_id] [int] NULL,
+	[promocion_id] [int] NULL,
+	[pedido_id] [int] NULL,
+	[unidades] [int] NULL,
+	[litros] [money] NULL,
+	[precio] [money] NULL,
+	[importe_bruto] [money] NULL,
+	[importe_dtos] [money] NULL,
+	[importe_promos] [money] NULL,
+	[importe_neto] [money] NULL,
+	[coste_unit] [money] NULL,
+	[coste_total] [money] NULL,
+	[imagen_porc] [money] NULL,
+	[margen_unit] [money] NULL,
+	[margen_total] [money] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  ForeignKey [FK_hechos_bodegas]    Script Date: 04/13/2013 23:21:02 ******/
+ALTER TABLE [dbo].[hechos]  WITH CHECK ADD  CONSTRAINT [FK_hechos_bodegas] FOREIGN KEY([centro_id])
+REFERENCES [dbo].[bodegas] ([centro_id])
+GO
+ALTER TABLE [dbo].[hechos] CHECK CONSTRAINT [FK_hechos_bodegas]
+GO
+/****** Object:  ForeignKey [FK_hechos_cliente]    Script Date: 04/13/2013 23:21:02 ******/
+ALTER TABLE [dbo].[hechos]  WITH CHECK ADD  CONSTRAINT [FK_hechos_cliente] FOREIGN KEY([cliente_id])
+REFERENCES [dbo].[cliente] ([cliente_id])
+GO
+ALTER TABLE [dbo].[hechos] CHECK CONSTRAINT [FK_hechos_cliente]
+GO
+/****** Object:  ForeignKey [FK_hechos_producto]    Script Date: 04/13/2013 23:21:02 ******/
+ALTER TABLE [dbo].[hechos]  WITH CHECK ADD  CONSTRAINT [FK_hechos_producto] FOREIGN KEY([material_id])
+REFERENCES [dbo].[producto] ([material_id])
+GO
+ALTER TABLE [dbo].[hechos] CHECK CONSTRAINT [FK_hechos_producto]
+GO
+/****** Object:  ForeignKey [FK_hechos_promocion]    Script Date: 04/13/2013 23:21:02 ******/
+ALTER TABLE [dbo].[hechos]  WITH CHECK ADD  CONSTRAINT [FK_hechos_promocion] FOREIGN KEY([promocion_id])
+REFERENCES [dbo].[promocion] ([promocion_id])
+GO
+ALTER TABLE [dbo].[hechos] CHECK CONSTRAINT [FK_hechos_promocion]
+GO
+/****** Object:  ForeignKey [FK_hechos_tiempo]    Script Date: 04/13/2013 23:21:02 ******/
+ALTER TABLE [dbo].[hechos]  WITH CHECK ADD  CONSTRAINT [FK_hechos_tiempo] FOREIGN KEY([fecha_id])
+REFERENCES [dbo].[tiempo] ([fecha_id])
+GO
+ALTER TABLE [dbo].[hechos] CHECK CONSTRAINT [FK_hechos_tiempo]
+GO
+
+
+
+select dbo.producto.material_id , dbo.hechos.material_id from producto right join dbo.hechos 
+on dbo.producto.material_id= dbo.hechos.material_id where dbo.producto.material_id is null 
+
+
+delete from hechos where cliente_id in
+(
+select dbo.hechos.cliente_id   from cliente right join dbo.hechos 
+on dbo.cliente.cliente_id = dbo.hechos.cliente_id where dbo.cliente.cliente_id is null
+)
